@@ -9,7 +9,6 @@ __pycache__/
 *$py.class
 
 # Local Databases
-db.sqlite3
 db.sqlite3-journal
 
 # Django production static & media folders
