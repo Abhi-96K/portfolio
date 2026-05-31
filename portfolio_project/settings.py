@@ -70,11 +70,15 @@ WSGI_APPLICATION = 'portfolio_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+db_from_env = dj_database_url.config(conn_max_age=600)
+if not db_from_env and os.environ.get('POSTGRES_URL'):
+    db_from_env = dj_database_url.parse(os.environ.get('POSTGRES_URL'))
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600
-    )
+    'default': db_from_env or {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 STORAGES = {
