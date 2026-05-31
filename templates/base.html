@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Abhirath V. Raner | Extraordinary Portfolio{% endblock %}</title>
+    
+    <!-- Meta tags for high-end SEO -->
+    <meta name="description" content="Portfolio of Abhirath V. Raner, B.Tech Computer Science student, Django Backend Architect, Full-Stack developer & AI enthusiast. Transforming ideas into extraordinary digital experiences.">
+    <meta name="keywords" content="Abhirath V Raner, Django Developer, Full Stack Developer, Python Developer, Mumbai, B.Tech CSE, Portfolio, Web Developer, AI Student, Entrepreneur">
+    <meta name="author" content="Abhirath V. Raner">
+    
+    <!-- Open Graph (OG) details -->
+    <meta property="og:title" content="Abhirath V. Raner | Extraordinary Portfolio">
+    <meta property="og:description" content="Discover the next-generation digital portfolio of Abhirath V. Raner. Unlocking premium, immersive experiences with Python, Django, GSAP, and AI.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://{{ request.get_host }}">
+    
+    <!-- Premium Google Fonts (Outfit & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for technical icon sets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (Play CDN for rapid high-performance development) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#0A0A0C',
+                            card: 'rgba(17, 17, 21, 0.75)',
+                            primary: '#8B5CF6', /* Purple */
+                            secondary: '#06B6D4', /* Teal */
+                            accent: '#F59E0B', /* Amber */
+                            glow: 'rgba(139, 92, 246, 0.15)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-[#0A0A0C] text-gray-100 font-sans overflow-x-hidden selection:bg-purple-500 selection:text-white transition-colors duration-300">
+
+    <!-- 1. Magnetic Custom Cursor -->
+    <div id="custom-cursor" class="hidden md:block"></div>
+    <div id="custom-cursor-dot" class="hidden md:block"></div>
+
+    <!-- 2. Cinematic Count-Up Loader Overlay -->
+    <div id="loader" class="fixed inset-0 z-[9999] flex flex-col justify-center items-center bg-[#070709] transition-all duration-1000 ease-in-out">
+        <!-- SVG Cyber Logo Reveal -->
+        <div class="relative w-24 h-24 mb-8 flex justify-center items-center">
+            <svg class="absolute inset-0 w-full h-full rotate-svg animate-spin" style="animation-duration: 6s;" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" stroke="url(#logo-grad)" stroke-width="2" fill="none" stroke-dasharray="100 80" />
+                <defs>
+                    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#8B5CF6" />
+                        <stop offset="100%" stop-color="#06B6D4" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="text-3xl font-outfit font-extrabold bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-transparent select-none">
+                AR
+            </div>
+        </div>
+        <!-- Immersive progress number -->
+        <div class="font-outfit font-extrabold text-5xl tracking-widest text-white mb-2 selection:bg-transparent" id="loader-percent">
+            00
+        </div>
+        <div class="text-xs font-outfit uppercase tracking-[0.3em] text-cyan-400 animate-pulse">
+            System Initializing
+        </div>
+        
+        <!-- Screen splits for loader exit -->
+        <div class="loader-split-top absolute top-0 left-0 w-full h-1/2 bg-[#070709] z-[-1] transition-all duration-700"></div>
+        <div class="loader-split-bottom absolute bottom-0 left-0 w-full h-1/2 bg-[#070709] z-[-1] transition-all duration-700"></div>
+    </div>
+
+    <!-- 3. Dynamic Vector Particle Universe -->
+    <canvas id="universe-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
+
+    <!-- 4. Floating Premium Navigation Header -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-500" id="main-header">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a href="/" class="flex items-center space-x-3 group cursor-magnetic select-none">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex justify-center items-center font-outfit font-black text-lg text-white shadow-lg shadow-purple-500/20 group-hover:scale-105 transition-transform duration-300">
+                    AR
+                </div>
+                <span class="font-outfit font-bold text-lg tracking-wider bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent group-hover:from-purple-400 group-hover:to-cyan-400 transition-all duration-500">
+                    Abhirath V. R.
+                </span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-1 bg-white/[0.03] dark:bg-black/[0.15] border border-white/[0.05] rounded-full px-8 py-2 backdrop-blur-xl">
+                <a href="/#about" class="px-4 py-1 text-sm font-medium hover:text-cyan-400 transition-colors cursor-magnetic">About</a>
+                <a href="/#skills" class="px-4 py-1 text-sm font-medium hover:text-cyan-400 transition-colors cursor-magnetic">Skills</a>
+                <a href="/#projects" class="px-4 py-1 text-sm font-medium hover:text-cyan-400 transition-colors cursor-magnetic">Projects</a>
+                <a href="/#timeline" class="px-4 py-1 text-sm font-medium hover:text-cyan-400 transition-colors cursor-magnetic">Timeline</a>
+                <a href="/#gallery" class="px-4 py-1 text-sm font-medium hover:text-cyan-400 transition-colors cursor-magnetic">Gallery</a>
+                <a href="/#blog" class="px-4 py-1 text-sm font-medium hover:text-cyan-400 transition-colors cursor-magnetic">Insights</a>
+                <a href="/#contact" class="px-4 py-1 text-sm font-medium hover:text-cyan-400 transition-colors cursor-magnetic">Contact</a>
+            </nav>
+
+            <!-- CTA & Theme Toggle -->
+            <div class="flex items-center space-x-4">
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.08] flex justify-center items-center cursor-magnetic transition-all duration-300">
+                    <i class="fas fa-sun text-yellow-400 text-sm hidden dark:block"></i>
+                    <i class="fas fa-moon text-purple-600 text-sm block dark:hidden"></i>
+                </button>
+                
+                <!-- Quick Dashboard -->
+                <a href="/dashboard/" class="hidden sm:flex px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-sm font-bold tracking-wide text-white shadow-lg shadow-cyan-500/25 transition-all duration-300 scale-95 hover:scale-100 hover:shadow-cyan-400/40 cursor-magnetic">
+                    Cyber Panel
+                </a>
+                
+                <!-- Mobile Navigation Trigger -->
+                <button id="mobile-nav-toggle" class="block md:hidden w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.05] flex justify-center items-center">
+                    <i class="fas fa-bars text-gray-300"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[#0A0A0C]/95 backdrop-blur-2xl border-b border-white/[0.05] py-6 px-8 flex flex-col space-y-4">
+            <a href="/#about" class="text-lg font-outfit font-semibold hover:text-cyan-400 transition-colors">About</a>
+            <a href="/#skills" class="text-lg font-outfit font-semibold hover:text-cyan-400 transition-colors">Skills</a>
+            <a href="/#projects" class="text-lg font-outfit font-semibold hover:text-cyan-400 transition-colors">Projects</a>
+            <a href="/#timeline" class="text-lg font-outfit font-semibold hover:text-cyan-400 transition-colors">Timeline</a>
+            <a href="/#gallery" class="text-lg font-outfit font-semibold hover:text-cyan-400 transition-colors">Gallery</a>
+            <a href="/#blog" class="text-lg font-outfit font-semibold hover:text-cyan-400 transition-colors">Insights</a>
+            <a href="/#contact" class="text-lg font-outfit font-semibold hover:text-cyan-400 transition-colors">Contact</a>
+            <a href="/dashboard/" class="py-3 text-center rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 font-bold text-white shadow-lg">Cyber Panel</a>
+        </div>
+    </header>
+
+    <!-- Main Content block -->
+    <main class="relative z-10 min-h-screen">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Cyberpunk Footer Section -->
+    <footer class="relative z-10 bg-[#060608] border-t border-white/[0.03] py-12 overflow-hidden">
+        <!-- Ambient Glow -->
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+            <!-- Left Info -->
+            <div class="flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-cyan-400 flex justify-center items-center font-outfit font-black text-sm text-white select-none">
+                            AR
+                        </div>
+                        <span class="font-outfit font-extrabold text-white tracking-widest">
+                            ABHIRATH V. R.
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-500 leading-relaxed font-light">
+                        Designed with futuristic glassmorphism and animated dynamics. Creating next-generation digital experiences that reshape client visions.
+                    </p>
+                </div>
+                <div class="mt-8 text-xs text-gray-600">
+                    &copy; 2026 Abhirath V. Raner. All rights reserved.
+                </div>
+            </div>
+
+            <!-- Middle Quick Links -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <h4 class="font-outfit font-bold text-xs uppercase tracking-widest text-cyan-400 mb-4">Universe</h4>
+                    <ul class="space-y-2 text-sm text-gray-400 font-light">
+                        <li><a href="/#about" class="hover:text-white transition-colors">Biography</a></li>
+                        <li><a href="/#skills" class="hover:text-white transition-colors">Skill Galaxy</a></li>
+                        <li><a href="/#projects" class="hover:text-white transition-colors">Launchpad</a></li>
+                        <li><a href="/#timeline" class="hover:text-white transition-colors">History</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-outfit font-bold text-xs uppercase tracking-widest text-purple-400 mb-4">Channels</h4>
+                    <ul class="space-y-2 text-sm text-gray-400 font-light">
+                        <li><a href="/#blog" class="hover:text-white transition-colors">Insights</a></li>
+                        <li><a href="https://github.com/Abhi-96K" target="_blank" class="hover:text-white transition-colors">Github</a></li>
+                        <li><a href="https://www.linkedin.com/in/abhirath-v-r-patil/" target="_blank" class="hover:text-white transition-colors">LinkedIn</a></li>
+                        <li><a href="/#contact" class="hover:text-white transition-colors">Get In Touch</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Terminal Newsletter/Credits -->
+            <div>
+                <h4 class="font-outfit font-bold text-xs uppercase tracking-widest text-amber-500 mb-4">System Console</h4>
+                <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05] font-mono text-xs text-gray-500 leading-normal">
+                    <p class="text-green-400 select-none">$ system_status --check</p>
+                    <p class="text-gray-400">> Hostname: abhirath.portfolio</p>
+                    <p class="text-gray-400">> DB Connection: SQLite ACTIVE</p>
+                    <p class="text-gray-400">> Deployment: VERCEL READY</p>
+                    <p class="text-cyan-400 select-none mt-2">> Keep building. Reshaping fields.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP, ScrollTrigger & Lenis Smooth Scroll CDN scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lenis for high-performance inertia smooth scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <!-- Custom Frontend Javascript Assets -->
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/cursor.js' %}"></script>
+    <script src="{% static 'js/particles.js' %}"></script>
+    <script src="{% static 'js/animations.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

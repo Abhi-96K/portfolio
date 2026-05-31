@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cybernetic Control Dashboard | Abhirath V. Raner{% endblock %}
+
+{% block content %}
+<section class="relative min-h-screen pt-32 pb-24 overflow-hidden bg-radial-universe select-none">
+    <!-- Glow Elements -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-purple-600/5 rounded-full blur-[140px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10 hero-stagger">
+        <!-- Header Console -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/[0.05] pb-8 mb-12 gap-4">
+            <div>
+                <span class="text-xs font-mono font-bold tracking-widest text-cyan-400 uppercase">SYS_CONSOLE / SECURE CORE</span>
+                <h1 class="font-outfit font-black text-3xl md:text-4xl text-white mt-1">Cybernetic Panel.</h1>
+                <p class="text-xs text-gray-500 font-mono mt-1">Welcome, Operator: <strong class="text-white">{{ user.username }}</strong></p>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <a href="/admin/" target="_blank" class="cursor-magnetic px-5 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:bg-white/[0.05] text-xs font-bold tracking-wide text-gray-300 hover:text-white flex items-center space-x-2">
+                    <i class="fas fa-cogs text-xs text-cyan-400"></i>
+                    <span>Open Django Admin</span>
+                </a>
+                <a href="/admin/logout/" class="px-5 py-2.5 rounded-xl bg-red-500/10 border border-red-500/25 hover:bg-red-500/20 text-xs font-bold tracking-wide text-red-400 flex items-center space-x-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Terminate Session</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Metrics widgets row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <!-- Analytics (Blog views) -->
+            <div class="p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] cyber-glass flex justify-between items-center shadow-lg">
+                <div>
+                    <span class="text-[10px] font-mono text-cyan-400 uppercase tracking-widest block">System Traffic</span>
+                    <span class="text-3xl font-outfit font-black text-white block mt-2">{{ total_views }}</span>
+                    <span class="text-[9px] text-gray-500 font-mono mt-1 block">Total Blog Views</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex justify-center items-center text-cyan-400 text-lg">
+                    <i class="fas fa-chart-line animate-pulse"></i>
+                </div>
+            </div>
+
+            <!-- Inbox Messages -->
+            <div class="p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] cyber-glass flex justify-between items-center shadow-lg">
+                <div>
+                    <span class="text-[10px] font-mono text-purple-400 uppercase tracking-widest block">Beamed Inbox</span>
+                    <span class="text-3xl font-outfit font-black text-white block mt-2">
+                        {{ messages.count }}
+                        {% if unread_count > 0 %}
+                        <span class="text-xs font-bold text-red-400 font-mono">({{ unread_count }} New)</span>
+                        {% endif %}
+                    </span>
+                    <span class="text-[9px] text-gray-500 font-mono mt-1 block">Client Frequencies</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex justify-center items-center text-purple-400 text-lg">
+                    <i class="far fa-envelope"></i>
+                </div>
+            </div>
+
+            <!-- Stellar Projects -->
+            <div class="p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] cyber-glass flex justify-between items-center shadow-lg">
+                <div>
+                    <span class="text-[10px] font-mono text-amber-500 uppercase tracking-widest block">Launchpad</span>
+                    <span class="text-3xl font-outfit font-black text-white block mt-2">{{ projects_count }}</span>
+                    <span class="text-[9px] text-gray-500 font-mono mt-1 block">Active Case Studies</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex justify-center items-center text-amber-500 text-lg">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+            </div>
+
+            <!-- Galaxy Skills -->
+            <div class="p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] cyber-glass flex justify-between items-center shadow-lg">
+                <div>
+                    <span class="text-[10px] font-mono text-pink-400 uppercase tracking-widest block">Skill Galaxy</span>
+                    <span class="text-3xl font-outfit font-black text-white block mt-2">{{ skills_count }}</span>
+                    <span class="text-[9px] text-gray-500 font-mono mt-1 block">Dynamic Orbit Nodes</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-pink-500/10 flex justify-center items-center text-pink-400 text-lg">
+                    <i class="fas fa-globe"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard panels split -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Left Side: Beamed Inbox list -->
+            <div class="lg:col-span-8 p-6 rounded-3xl bg-white/[0.01] border border-white/[0.03] cyber-glass shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-outfit font-black text-lg text-white">Beamed Frequencies (Inbox)</h3>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.03] text-gray-500 uppercase">Secure logs</span>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-white/[0.04] font-mono text-[9px] text-gray-500 uppercase tracking-wider">
+                                <th class="pb-3 pr-4">Status</th>
+                                <th class="pb-3 pr-4">Sender</th>
+                                <th class="pb-3 pr-4">Subject Coordinates</th>
+                                <th class="pb-3">Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-xs text-gray-300 font-light divide-y divide-white/[0.02]">
+                            {% for msg in messages %}
+                            <tr class="hover:bg-white/[0.01] transition-colors cursor-pointer" onclick="viewMessage('{{ msg.name|escapejs }}', '{{ msg.email|escapejs }}', '{{ msg.phone|default:""|escapejs }}', '{{ msg.subject|default:"No Subject"|escapejs }}', '{{ msg.message|escapejs }}', '{{ msg.created_at|date:"M d, Y H:i" }}')">
+                                <td class="py-4 pr-4">
+                                    {% if msg.is_read %}
+                                    <span class="px-2 py-0.5 rounded-full bg-gray-500/10 text-gray-500 text-[8px] font-mono uppercase border border-gray-500/20">Read</span>
+                                    {% else %}
+                                    <span class="px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 text-[8px] font-mono uppercase border border-green-500/20 animate-pulse">New</span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-4 pr-4">
+                                    <span class="font-bold text-white block">{{ msg.name }}</span>
+                                    <span class="text-[10px] text-gray-500 font-mono">{{ msg.email }}</span>
+                                </td>
+                                <td class="py-4 pr-4 font-outfit text-sm text-gray-200">
+                                    {{ msg.subject|default:"No Subject coordinates"|truncatewords:6 }}
+                                </td>
+                                <td class="py-4 font-mono text-[10px] text-gray-500">
+                                    {{ msg.created_at|date:"M d, H:i" }}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="py-12 text-center text-gray-500 font-mono">No beamed frequencies found in the database. Send one from home page!</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Side: Quick administration panel -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="p-6 rounded-3xl bg-white/[0.01] border border-white/[0.03] cyber-glass shadow-xl">
+                    <h3 class="font-outfit font-black text-lg text-white mb-4">Core Actions</h3>
+                    
+                    <div class="space-y-3">
+                        <a href="/admin/projects/project/add/" target="_blank" class="w-full flex justify-between items-center px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:bg-purple-500/10 hover:border-purple-500/20 transition-all duration-300 text-xs font-bold text-gray-300 hover:text-white">
+                            <span>Launch New Project Case Study</span>
+                            <i class="fas fa-plus text-[10px] text-purple-400"></i>
+                        </a>
+                        <a href="/admin/blog/post/add/" target="_blank" class="w-full flex justify-between items-center px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:bg-cyan-500/10 hover:border-cyan-500/20 transition-all duration-300 text-xs font-bold text-gray-300 hover:text-white">
+                            <span>Write Insight Blog Post</span>
+                            <i class="fas fa-pen-nib text-[10px] text-cyan-400"></i>
+                        </a>
+                        <a href="/admin/core/skill/add/" target="_blank" class="w-full flex justify-between items-center px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:bg-pink-500/10 hover:border-pink-500/20 transition-all duration-300 text-xs font-bold text-gray-300 hover:text-white">
+                            <span>Register New Galaxy Skill</span>
+                            <i class="fas fa-globe text-[10px] text-pink-400"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-3xl bg-white/[0.01] border border-white/[0.03] cyber-glass shadow-xl select-none font-mono text-[10px] text-gray-500 leading-relaxed">
+                    <span class="text-[9px] font-bold text-cyan-400 uppercase tracking-widest block mb-2">Secure Status</span>
+                    <p class="text-green-400">$ system_auth --status</p>
+                    <p>> Core Server: Active</p>
+                    <p>> Cryptographic Key: SECURE</p>
+                    <p>> DB SQLite Engine: Compiling</p>
+                    <p class="text-cyan-400 mt-2">> Operator session fully authorized.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inbox Message Detail Overlay Drawer -->
+    <div id="message-drawer" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[1000] hidden flex-col justify-center items-center p-6 transition-all duration-300">
+        <button onclick="closeDrawer()" class="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white flex justify-center items-center">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="max-w-2xl w-full p-8 rounded-3xl bg-[#0C0C0E] border border-white/10 shadow-2xl relative">
+            <span class="text-[8px] font-mono text-cyan-400 uppercase tracking-widest block mb-2">INBOX_DECRYPTED_RECORD</span>
+            <h4 id="drawer-subject" class="font-outfit font-black text-2xl text-white mb-4">Message Coordinates</h4>
+            
+            <div class="space-y-4 mb-6 border-y border-white/[0.05] py-4 text-xs font-mono text-gray-500">
+                <p>Sender Name: <strong class="text-white" id="drawer-name"></strong></p>
+                <p>Sender Email: <strong class="text-white" id="drawer-email"></strong></p>
+                <p>Sender Phone: <strong class="text-white" id="drawer-phone"></strong></p>
+                <p>Timestamp: <strong class="text-white" id="drawer-time"></strong></p>
+            </div>
+            
+            <div class="p-6 rounded-2xl bg-black/40 border border-white/5 text-sm text-gray-300 leading-relaxed font-light whitespace-pre-wrap max-h-60 overflow-y-auto" id="drawer-body">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Inline Javascript triggers for Message decrypter drawers -->
+<script>
+    function viewMessage(name, email, phone, subject, body, time) {
+        document.getElementById('drawer-name').innerText = name;
+        document.getElementById('drawer-email').innerText = email;
+        document.getElementById('drawer-phone').innerText = phone || 'None Specified';
+        document.getElementById('drawer-subject').innerText = subject;
+        document.getElementById('drawer-time').innerText = time;
+        document.getElementById('drawer-body').innerText = body;
+        
+        const drawer = document.getElementById('message-drawer');
+        drawer.classList.remove('hidden');
+        drawer.classList.add('flex');
+    }
+    
+    function closeDrawer() {
+        const drawer = document.getElementById('message-drawer');
+        drawer.classList.add('hidden');
+        drawer.classList.remove('flex');
+    }
+</script>
+{% endblock %}

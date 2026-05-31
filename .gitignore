@@ -1,0 +1,22 @@
+# Virtual Environments
+venv/
+ENV/
+.env
+
+# Python compilation files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local Databases
+db.sqlite3
+db.sqlite3-journal
+
+# Django production static & media folders
+staticfiles/
+media/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}System Insights Console | Abhirath V. Raner{% endblock %}
+
+{% block content %}
+<!-- Fullscreen Insights Header -->
+<section class="relative min-h-[40vh] flex items-center justify-center pt-32 overflow-hidden bg-radial-universe">
+    <div class="absolute inset-0 bg-black/30 z-[2]"></div>
+    
+    <div class="max-w-4xl mx-auto px-6 w-full text-center relative z-10 hero-stagger">
+        <span class="text-xs font-mono font-bold tracking-widest text-purple-400 uppercase">SYS_LOG / LOGICAL INSIGHTS</span>
+        <h1 class="font-outfit font-black text-4xl md:text-5xl text-white mt-4 mb-6 tracking-tight">The Insights Console.</h1>
+        <p class="text-base text-gray-400 font-light leading-relaxed max-w-xl mx-auto">
+            Exploring concepts in python architectures, scalable Django structures, autonomous AI agentic workflows, and tech entrepreneurship milestones.
+        </p>
+    </div>
+</section>
+
+<!-- Filter & Articles Section -->
+<section class="py-20 bg-[#08080A]">
+    <div class="max-w-6xl mx-auto px-6">
+        
+        <!-- Filter Console (Search & Category Chips) -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
+            <!-- Dynamic Category Chips -->
+            <div class="flex flex-wrap gap-2 select-none">
+                <a href="{% url 'blog:list' %}" class="px-4 py-2 rounded-xl text-xs font-bold tracking-wider transition-all duration-300 border 
+                    {% if not current_category and not current_tag %}bg-gradient-to-r from-purple-600 to-cyan-500 text-white border-transparent shadow shadow-cyan-500/20{% else %}bg-white/[0.01] border-white/[0.06] text-gray-400 hover:text-white{% endif %}">
+                    All Frequencies
+                </a>
+                {% for cat in categories %}
+                <a href="{% url 'blog:list' %}?category={{ cat.slug }}" class="px-4 py-2 rounded-xl text-xs font-bold tracking-wider transition-all duration-300 border
+                    {% if current_category.slug == cat.slug %}bg-gradient-to-r from-purple-600 to-cyan-500 text-white border-transparent shadow shadow-cyan-500/20{% else %}bg-white/[0.01] border-white/[0.06] text-gray-400 hover:text-white{% endif %}">
+                    {{ cat.name }}
+                </a>
+                {% endfor %}
+            </div>
+            
+            <!-- Sleek Search Bar -->
+            <form action="{% url 'blog:list' %}" method="GET" class="w-full md:w-80 relative">
+                {% if current_category %}<input type="hidden" name="category" value="{{ current_category.slug }}">{% endif %}
+                {% if current_tag %}<input type="hidden" name="tag" value="{{ current_tag.slug }}">{% endif %}
+                <input type="text" name="q" value="{{ search_query|default:'' }}" placeholder="Search coordinates..." class="w-full px-4 py-3 bg-black/[0.2] border border-white/[0.06] rounded-xl focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-xs transition-all duration-300 text-white pl-10">
+                <button type="submit" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs hover:text-white">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Filter Status Tag -->
+        {% if current_category or current_tag or search_query %}
+        <div class="mb-8 p-4 rounded-xl bg-white/[0.01] border border-white/[0.05] cyber-glass flex justify-between items-center">
+            <span class="text-xs font-mono text-gray-400">
+                Found <strong class="text-white">{{ posts.count }}</strong> posts for
+                {% if current_category %}category <strong class="text-cyan-400">"{{ current_category.name }}"</strong>{% endif %}
+                {% if current_tag %}tag <strong class="text-purple-400">"#{{ current_tag.name }}"</strong>{% endif %}
+                {% if search_query %}query <strong class="text-amber-500">"{{ search_query }}"</strong>{% endif %}
+            </span>
+            <a href="{% url 'blog:list' %}" class="text-xs font-mono text-red-400 hover:text-red-300 flex items-center space-x-1">
+                <i class="fas fa-times-circle"></i>
+                <span>Clear Filters</span>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Articles Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for post in posts %}
+            <article class="cyber-card rounded-3xl overflow-hidden flex flex-col justify-between h-[450px]" data-cursor-text="READ">
+                <!-- Cover Area -->
+                <div class="h-48 bg-gradient-to-tr from-purple-900 to-zinc-950 flex items-center justify-center relative select-none">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <div class="relative z-10 px-6 text-center">
+                        <span class="px-2.5 py-1 rounded bg-purple-500/20 border border-purple-500/30 text-[9px] font-mono font-bold text-purple-300 uppercase tracking-widest select-none">{{ post.category.name }}</span>
+                    </div>
+                </div>
+                
+                <!-- Content parameters -->
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[9px] font-mono text-gray-500">{{ post.created_at|date:"M d, Y" }} | {{ post.read_time_minutes }} MINS READ</span>
+                        <h3 class="font-outfit font-bold text-lg text-white mt-2 mb-3 leading-snug hover:text-cyan-400 transition-colors">
+                            <a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a>
+                        </h3>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed mb-4 line-clamp-3">{{ post.excerpt }}</p>
+                    </div>
+                    
+                    <div class="flex flex-col space-y-4">
+                        <!-- Tags List -->
+                        <div class="flex flex-wrap gap-1">
+                            {% for tag in post.tags.all %}
+                            <a href="{% url 'blog:list' %}?tag={{ tag.slug }}" class="text-[9px] font-mono text-gray-500 hover:text-white transition-colors bg-white/[0.02] border border-white/[0.05] px-2 py-0.5 rounded">
+                                #{{ tag.name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        
+                        <a href="{% url 'blog:detail' post.slug %}" class="text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300 flex items-center space-x-1.5 w-fit">
+                            <span>Read Article</span>
+                            <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <p class="text-gray-500 text-center col-span-3 font-mono py-12">No articles match your search parameters. Launch the admin panel to seed new articles!</p>
+            {% endfor %}
+        </div>
+
+        <!-- Back to landing coordinates -->
+        <div class="text-center mt-20">
+            <a href="/" class="cursor-magnetic px-8 py-3.5 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:bg-white/[0.05] text-xs font-bold text-gray-300 hover:text-white transition-colors duration-300 inline-flex items-center space-x-2">
+                <i class="fas fa-arrow-left"></i>
+                <span>Return to Home</span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
